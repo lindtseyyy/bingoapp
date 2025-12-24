@@ -157,36 +157,6 @@ export default function PatternCreator({
           <Text style={styles.buttonText}>Save Pattern</Text>
         </TouchableOpacity>
       </View>
-
-      {/* Predefined Patterns */}
-      <View style={styles.presetsContainer}>
-        <Text style={styles.presetsTitle}>Quick Presets:</Text>
-        <View style={styles.presetsGrid}>
-          {getPredefinedPatterns()
-            .slice(0, 6)
-            .map((preset, index) => (
-              <TouchableOpacity
-                key={preset.id}
-                style={[
-                  styles.presetButton,
-                  selectedPreset === preset.id && styles.presetButtonSelected,
-                ]}
-                onPress={() => loadPreset(index)}
-              >
-                <Text
-                  style={[
-                    styles.presetButtonText,
-                    selectedPreset === preset.id &&
-                      styles.presetButtonTextSelected,
-                  ]}
-                  numberOfLines={2}
-                >
-                  {preset.name}
-                </Text>
-              </TouchableOpacity>
-            ))}
-        </View>
-      </View>
     </ScrollView>
   );
 }

@@ -118,50 +118,70 @@ export default function PatternsScreen() {
         </View>
       ) : (
         <ScrollView style={styles.scrollContainer}>
-          {patterns.map((pattern) => {
-            const positions = getPatternPositions(pattern);
-            return (
-              <View key={pattern.id} style={styles.patternContainer}>
-                <View style={styles.patternHeader}>
-                  <View style={styles.patternInfo}>
-                    <View style={styles.patternTitleRow}>
-                      <Text style={styles.patternName}>{pattern.name}</Text>
-                      {isBuiltInPattern(pattern.name) && (
+          {/* User Patterns (Editable) */}
+          {patterns
+            .filter((pattern) => !isBuiltInPattern(pattern.name))
+            .map((pattern) => {
+              const positions = getPatternPositions(pattern);
+              return (
+                <View key={pattern.id} style={styles.patternContainer}>
+                  <View style={styles.patternHeader}>
+                    <View style={styles.patternInfo}>
+                      <View style={styles.patternTitleRow}>
+                        <Text style={styles.patternName}>{pattern.name}</Text>
+                      </View>
+                      <Text style={styles.patternDetails}>
+                        {positions.length} squares required
+                      </Text>
+                    </View>
+                    <View style={styles.buttonGroup}>
+                      <TouchableOpacity
+                        style={styles.editButton}
+                        onPress={() => handleEditPattern(pattern)}
+                      >
+                        <Text style={styles.editButtonText}>Edit</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={styles.deleteButton}
+                        onPress={() =>
+                          handleDeletePattern(pattern.id, pattern.name)
+                        }
+                      >
+                        <Text style={styles.deleteButtonText}>Delete</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+
+                  {renderPatternGrid(pattern)}
+                </View>
+              );
+            })}
+
+          {/* Built-in Patterns */}
+          {patterns
+            .filter((pattern) => isBuiltInPattern(pattern.name))
+            .map((pattern) => {
+              const positions = getPatternPositions(pattern);
+              return (
+                <View key={pattern.id} style={styles.patternContainer}>
+                  <View style={styles.patternHeader}>
+                    <View style={styles.patternInfo}>
+                      <View style={styles.patternTitleRow}>
+                        <Text style={styles.patternName}>{pattern.name}</Text>
                         <View style={styles.builtInBadge}>
                           <Text style={styles.builtInBadgeText}>Built-in</Text>
                         </View>
-                      )}
+                      </View>
+                      <Text style={styles.patternDetails}>
+                        {positions.length} squares required
+                      </Text>
                     </View>
-                    <Text style={styles.patternDetails}>
-                      {positions.length} squares required
-                    </Text>
                   </View>
-                  <View style={styles.buttonGroup}>
-                    {!isBuiltInPattern(pattern.name) && (
-                      <>
-                        <TouchableOpacity
-                          style={styles.editButton}
-                          onPress={() => handleEditPattern(pattern)}
-                        >
-                          <Text style={styles.editButtonText}>Edit</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                          style={styles.deleteButton}
-                          onPress={() =>
-                            handleDeletePattern(pattern.id, pattern.name)
-                          }
-                        >
-                          <Text style={styles.deleteButtonText}>Delete</Text>
-                        </TouchableOpacity>
-                      </>
-                    )}
-                  </View>
-                </View>
 
-                {renderPatternGrid(pattern)}
-              </View>
-            );
-          })}
+                  {renderPatternGrid(pattern)}
+                </View>
+              );
+            })}
         </ScrollView>
       )}
 
