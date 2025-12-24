@@ -3,16 +3,10 @@
  */
 
 import { useTheme } from "@/contexts/ThemeContext";
+import { useAlert } from "@/src/utils/themedAlert";
 import { useFocusEffect } from "@react-navigation/native";
 import React, { useCallback, useMemo, useState } from "react";
-import {
-  Alert,
-  Modal,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Modal, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import BingoCard from "../components/BingoCard";
 import {
@@ -29,6 +23,7 @@ export default function CardsScreen() {
   const [showManualCreator, setShowManualCreator] = useState(false);
   const [editingCard, setEditingCard] = useState<BingoCardType | null>(null);
   const { colorScheme } = useTheme();
+  const { showAlert } = useAlert();
 
   // Dynamic styles based on theme
   const styles = useMemo(() => createStyles(colorScheme), [colorScheme]);
@@ -49,7 +44,7 @@ export default function CardsScreen() {
 
     // Validate the card (just to be safe)
     if (!validateBingoCard(newCard)) {
-      Alert.alert(
+      showAlert(
         "Error",
         "Generated card has duplicate numbers. Please try again."
       );
@@ -58,11 +53,11 @@ export default function CardsScreen() {
 
     await saveCard(newCard);
     await loadCards();
-    Alert.alert("Success", "New card generated!");
+    showAlert("Success", "New card generated!");
   };
 
   const handleDeleteCard = (cardId: string) => {
-    Alert.alert("Delete Card", "Are you sure you want to delete this card?", [
+    showAlert("Delete Card", "Are you sure you want to delete this card?", [
       { text: "Cancel", style: "cancel" },
       {
         text: "Delete",
