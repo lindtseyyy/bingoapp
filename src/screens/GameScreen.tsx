@@ -319,6 +319,23 @@ export default function GameScreen() {
           </TouchableOpacity>
         </View>
 
+        {/* Selected Patterns Section */}
+        {!isHeaderCollapsed && (
+          <View style={styles.patternsSection}>
+            <Text style={styles.patternsSectionTitle}>Playing Patterns:</Text>
+            <View style={styles.patternsContainer}>
+              {selectedPatterns.map((pattern) => (
+                <View key={pattern.id} style={styles.patternChip}>
+                  <Text style={styles.patternChipText}>{pattern.name}</Text>
+                </View>
+              ))}
+              {selectedPatterns.length === 0 && (
+                <Text style={styles.noPatternsText}>No patterns selected</Text>
+              )}
+            </View>
+          </View>
+        )}
+
         {/* Manual Caller Input - Always visible */}
         <View style={styles.cardContainer}>
           <ManualCaller
@@ -536,6 +553,41 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 12,
     fontWeight: "600",
+  },
+  patternsSection: {
+    backgroundColor: "#fff",
+    padding: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: "#e5e7eb",
+  },
+  patternsSectionTitle: {
+    fontSize: 13,
+    fontWeight: "600",
+    color: "#374151",
+    marginBottom: 8,
+  },
+  patternsContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 8,
+  },
+  patternChip: {
+    backgroundColor: "#ede9fe",
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: "#c4b5fd",
+  },
+  patternChipText: {
+    fontSize: 12,
+    fontWeight: "500",
+    color: "#5b21b6",
+  },
+  noPatternsText: {
+    fontSize: 12,
+    color: "#9ca3af",
+    fontStyle: "italic",
   },
   callerSection: {
     backgroundColor: "#fff",
