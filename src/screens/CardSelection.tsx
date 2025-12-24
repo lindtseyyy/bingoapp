@@ -6,6 +6,7 @@
 import { useTheme } from "@/contexts/ThemeContext";
 import React, { useEffect, useMemo, useState } from "react";
 import { Alert, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import BingoCardComponent from "../components/BingoCard";
 import { BingoCard } from "../logic/bingoGenerator";
 import { getAllCards } from "../services/storageService";
@@ -75,25 +76,25 @@ export default function CardSelection({
 
   if (loading) {
     return (
-      <View style={styles.loadingContainer}>
+      <SafeAreaView style={styles.loadingContainer}>
         <Text style={styles.loadingText}>Loading cards...</Text>
-      </View>
+      </SafeAreaView>
     );
   }
 
   if (cards.length === 0) {
     return (
-      <View style={styles.emptyContainer}>
+      <SafeAreaView style={styles.emptyContainer}>
         <Text style={styles.emptyTitle}>No Cards Available</Text>
         <Text style={styles.emptyText}>
           Create some cards first from the Cards tab
         </Text>
-      </View>
+      </SafeAreaView>
     );
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <View>
           <Text style={styles.title}>Select Cards to Play</Text>
@@ -160,6 +161,6 @@ export default function CardSelection({
           </Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
