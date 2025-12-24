@@ -4,51 +4,36 @@
  */
 
 import { useTheme } from "@/contexts/ThemeContext";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Alert, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
   WinningPattern,
   getPatternPositions,
 } from "../services/patternService";
-import { getAllPatterns } from "../services/storageService";
 import { createStyles } from "./styles/PatternSelection.styles";
 
 interface PatternSelectionProps {
   onSelectionComplete: (selectedPatternIds: string[]) => void;
   preSelectedIds?: string[];
+  availablePatterns?: WinningPattern[];
 }
 
 export default function PatternSelection({
   onSelectionComplete,
   preSelectedIds = [],
+  availablePatterns,
 }: PatternSelectionProps) {
   const { colorScheme } = useTheme();
   const styles = useMemo(() => createStyles(colorScheme), [colorScheme]);
 
-  const [patterns, setPatterns] = useState<WinningPattern[]>([]);
+  const patterns = availablePatterns || [];
   const [selectedIds, setSelectedIds] = useState<Set<string>>(
-    new Set(preSelectedIds)
+    new Set(preSelectedIds.filter((id) => patterns.some((p) => p.id === id)))
   );
   const [selectionMode, setSelectionMode] = useState<"single" | "multi">(
     preSelectedIds.length <= 1 ? "single" : "multi"
   );
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    loadPatterns();
-  }, []);
-
-  const loadPatterns = async () => {
-    try {
-      const loadedPatterns = await getAllPatterns();
-      setPatterns(loadedPatterns);
-    } catch (error) {
-      Alert.alert("Error", "Failed to load patterns");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const togglePattern = (patternId: string) => {
     const newSelected = new Set(selectedIds);
@@ -129,14 +114,6 @@ export default function PatternSelection({
       </View>
     );
   };
-
-  if (loading) {
-    return (
-      <SafeAreaView style={styles.loadingContainer}>
-        <Text style={styles.loadingText}>Loading patterns...</Text>
-      </SafeAreaView>
-    );
-  }
 
   if (patterns.length === 0) {
     return (

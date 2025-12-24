@@ -72,8 +72,20 @@ export default function GameScreen() {
 
       // Resume saved session if exists
       if (savedSession && savedSession.activeCardIds.length > 0) {
-        setSession(savedSession);
-        setSetupStep("playing");
+        // Check if any of the active cards still exist
+        const activeCardsExist = savedSession.activeCardIds.some((id) =>
+          loadedCards.some((card) => card.id === id)
+        );
+
+        if (activeCardsExist) {
+          setSession(savedSession);
+          setSetupStep("playing");
+        } else {
+          // All cards were deleted, clear session and restart
+          await clearSession();
+          setSession(null);
+          setSetupStep("card-selection");
+        }
       }
     } catch (error) {
       showAlert("Error", "Failed to load game data");
@@ -223,6 +235,7 @@ export default function GameScreen() {
       <CardSelection
         onSelectionComplete={handleCardSelectionComplete}
         preSelectedIds={session?.activeCardIds || []}
+        availableCards={allCards}
       />
     );
   }
@@ -244,6 +257,7 @@ export default function GameScreen() {
       <PatternSelection
         onSelectionComplete={handlePatternSelectionComplete}
         preSelectedIds={session?.activePatternIds || []}
+        availablePatterns={allPatterns}
       />
     );
   }
@@ -263,6 +277,29 @@ export default function GameScreen() {
   const selectedPatterns = allPatterns.filter((p) =>
     session.activePatternIds?.includes(p.id)
   );
+
+  // Check if all active cards were deleted
+  if (selectedCards.length === 0) {
+    return (
+      <View style={styles.emptyContainer}>
+        <Text style={styles.emptyTitle}>No Active Cards</Text>
+        <Text style={styles.emptyText}>
+          All cards in this session have been deleted.{"\n"}
+          Please start a new game session.
+        </Text>
+        <TouchableOpacity
+          style={styles.newSessionButton}
+          onPress={async () => {
+            await clearSession();
+            setSession(null);
+            setSetupStep("card-selection");
+          }}
+        >
+          <Text style={styles.newSessionButtonText}>Start New Session</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
 
   // Apply called numbers to cards for display
   const markedCards = applyCalledNumbersToCards(

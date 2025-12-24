@@ -4,46 +4,31 @@
  */
 
 import { useTheme } from "@/contexts/ThemeContext";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Alert, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import BingoCardComponent from "../components/BingoCard";
 import { BingoCard } from "../logic/bingoGenerator";
-import { getAllCards } from "../services/storageService";
 import { createStyles } from "./styles/CardSelection.styles";
 
 interface CardSelectionProps {
   onSelectionComplete: (selectedCardIds: string[]) => void;
   preSelectedIds?: string[];
+  availableCards?: BingoCard[];
 }
 
 export default function CardSelection({
   onSelectionComplete,
   preSelectedIds = [],
+  availableCards,
 }: CardSelectionProps) {
   const { colorScheme } = useTheme();
   const styles = useMemo(() => createStyles(colorScheme), [colorScheme]);
 
-  const [cards, setCards] = useState<BingoCard[]>([]);
+  const cards = availableCards || [];
   const [selectedIds, setSelectedIds] = useState<Set<string>>(
-    new Set(preSelectedIds)
+    new Set(preSelectedIds.filter((id) => cards.some((c) => c.id === id)))
   );
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    loadCards();
-  }, []);
-
-  const loadCards = async () => {
-    try {
-      const loadedCards = await getAllCards();
-      setCards(loadedCards);
-    } catch (error) {
-      Alert.alert("Error", "Failed to load cards");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const toggleCard = (cardId: string) => {
     const newSelected = new Set(selectedIds);
@@ -73,14 +58,6 @@ export default function CardSelection({
     }
     onSelectionComplete(Array.from(selectedIds));
   };
-
-  if (loading) {
-    return (
-      <SafeAreaView style={styles.loadingContainer}>
-        <Text style={styles.loadingText}>Loading cards...</Text>
-      </SafeAreaView>
-    );
-  }
 
   if (cards.length === 0) {
     return (

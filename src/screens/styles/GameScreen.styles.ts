@@ -37,6 +37,12 @@ export const createStyles = (colorScheme: "light" | "dark") => {
       fontSize: 14,
       color: isDark ? "#9ca3af" : "#6b7280",
       textAlign: "center",
+      marginBottom: 20,
+    },
+    newSessionButtonText: {
+      color: "#fff",
+      fontSize: 16,
+      fontWeight: "600",
     },
     sessionHeader: {
       backgroundColor: isDark ? "#1f2937" : "#fff",
