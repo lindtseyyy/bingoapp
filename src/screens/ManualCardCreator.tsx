@@ -4,9 +4,9 @@
  */
 
 import { useTheme } from "@/contexts/ThemeContext";
+import { useAlert } from "@/src/utils/themedAlert";
 import React, { useMemo, useState } from "react";
 import {
-  Alert,
   Modal,
   ScrollView,
   Text,
@@ -39,6 +39,7 @@ export default function ManualCardCreator({
   editingCard?: BingoCard | null;
 }) {
   const { colorScheme } = useTheme();
+  const { showAlert } = useAlert();
   const styles = useMemo(() => createStyles(colorScheme), [colorScheme]);
 
   const [card, setCard] = useState<BingoCard>(editingCard || createEmptyCard());
@@ -95,7 +96,7 @@ export default function ManualCardCreator({
     const number = parseInt(inputValue, 10);
 
     if (isNaN(number)) {
-      Alert.alert("Invalid Input", "Please enter a valid number");
+      showAlert("Invalid Input", "Please enter a valid number");
       return;
     }
 
@@ -103,7 +104,7 @@ export default function ManualCardCreator({
     const validation = validateNumberEntry(card, number, row, col);
 
     if (!validation.isValid) {
-      Alert.alert("Invalid Number", validation.error || "Invalid entry");
+      showAlert("Invalid Number", validation.error || "Invalid entry");
       return;
     }
 
@@ -124,7 +125,7 @@ export default function ManualCardCreator({
   };
 
   const handleAutoFill = () => {
-    Alert.alert(
+    showAlert(
       "Auto-Fill",
       "This will automatically fill all empty cells with random valid numbers. Continue?",
       [
@@ -153,10 +154,7 @@ export default function ManualCardCreator({
     const validation = validateCompleteCard(card);
 
     if (!validation.isValid) {
-      Alert.alert(
-        "Incomplete Card",
-        validation.error || "Please fill all cells"
-      );
+      showAlert("Incomplete Card", validation.error || "Please fill all cells");
       return;
     }
 
@@ -166,15 +164,15 @@ export default function ManualCardCreator({
         name: cardName.trim() || undefined,
       };
       await saveCard(cardToSave);
-      Alert.alert("Success", "Card saved successfully!");
+      showAlert("Success", "Card saved successfully!");
       onCardCreated?.();
     } catch (error) {
-      Alert.alert("Error", "Failed to save card");
+      showAlert("Error", "Failed to save card");
     }
   };
 
   const handleReset = () => {
-    Alert.alert("Reset Card", "Clear all entries and start over?", [
+    showAlert("Reset Card", "Clear all entries and start over?", [
       { text: "Cancel", style: "cancel" },
       {
         text: "Reset",
