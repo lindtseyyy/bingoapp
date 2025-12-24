@@ -129,10 +129,6 @@ export default function CardsScreen() {
               </View>
 
               <BingoCard card={card} showMarked={false} editable={false} />
-
-              <Text style={styles.cardInfo}>
-                Created: {new Date(card.createdAt).toLocaleDateString()}
-              </Text>
             </View>
           ))}
         </ScrollView>
