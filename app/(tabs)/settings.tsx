@@ -126,6 +126,10 @@ export default function SettingsScreen() {
             <Text style={styles.infoLabel}>Build</Text>
             <Text style={styles.infoValue}>December 2025</Text>
           </View>
+          <View style={styles.infoItem}>
+            <Text style={styles.infoLabel}>Developer</Text>
+            <Text style={styles.infoValue}>lindtseyvii</Text>
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>
