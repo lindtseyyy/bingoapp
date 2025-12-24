@@ -49,7 +49,7 @@ export default function GameScreen() {
   const [session, setSession] = useState<GameSession | null>(null);
   const [allCards, setAllCards] = useState<BingoCardType[]>([]);
   const [allPatterns, setAllPatterns] = useState<WinningPattern[]>([]);
-  const [isHeaderCollapsed, setIsHeaderCollapsed] = useState(false);
+  const [isHeaderCollapsed, setIsHeaderCollapsed] = useState(true);
   const [isHistoryModalVisible, setIsHistoryModalVisible] = useState(false);
 
   // Reload data when screen comes into focus (e.g., after creating cards in other tabs)
