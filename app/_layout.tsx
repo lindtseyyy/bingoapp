@@ -10,6 +10,7 @@ import "react-native-reanimated";
 
 import { ThemeProvider, useTheme } from "@/contexts/ThemeContext";
 import { initializeApp } from "@/src/utils/initializeApp";
+import { AlertProvider } from "@/src/utils/themedAlert";
 
 export const unstable_settings = {
   anchor: "(tabs)",
@@ -42,7 +43,9 @@ function RootLayoutNav() {
 export default function RootLayout() {
   return (
     <ThemeProvider>
-      <RootLayoutNav />
+      <AlertProvider>
+        <RootLayoutNav />
+      </AlertProvider>
     </ThemeProvider>
   );
 }

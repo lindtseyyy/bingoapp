@@ -4,10 +4,10 @@
  */
 
 import { useTheme } from "@/contexts/ThemeContext";
+import { useAlert } from "@/src/utils/themedAlert";
 import { useFocusEffect } from "@react-navigation/native";
 import React, { useMemo, useState } from "react";
 import {
-  Alert,
   Dimensions,
   ScrollView,
   Text,
@@ -42,6 +42,7 @@ const { height: screenHeight } = Dimensions.get("window");
 
 export default function GameScreen() {
   const { colorScheme } = useTheme();
+  const { showAlert } = useAlert();
   const styles = useMemo(() => createStyles(colorScheme), [colorScheme]);
 
   const [setupStep, setSetupStep] = useState<SetupStep>("card-selection");
@@ -75,13 +76,13 @@ export default function GameScreen() {
         setSetupStep("playing");
       }
     } catch (error) {
-      Alert.alert("Error", "Failed to load game data");
+      showAlert("Error", "Failed to load game data");
     }
   };
 
   const handleCardSelectionComplete = (selectedCardIds: string[]) => {
     if (selectedCardIds.length === 0) {
-      Alert.alert("No Cards", "Please select at least one card to play");
+      showAlert("No Cards", "Please select at least one card to play");
       return;
     }
     setSession(createGameSession(selectedCardIds, []));
@@ -124,7 +125,7 @@ export default function GameScreen() {
     for (const card of markedCards) {
       for (const pattern of selectedPatterns) {
         if (checkPattern(card, pattern)) {
-          Alert.alert(
+          showAlert(
             "🎉 BINGO! 🎉",
             `Card #${card.id.slice(-6)} wins with pattern "${pattern.name}"!`,
             [{ text: "Continue", onPress: () => {} }]
@@ -137,7 +138,7 @@ export default function GameScreen() {
   const handleNumberRemove = async (number: number) => {
     if (!session) return;
 
-    Alert.alert(
+    showAlert(
       "⚠️ Remove Number?",
       `Removing ${number} will un-mark it on all active cards. This cannot be undone.\n\nContinue?`,
       [
@@ -161,7 +162,7 @@ export default function GameScreen() {
   const handleClearAll = async () => {
     if (!session) return;
 
-    Alert.alert(
+    showAlert(
       "⚠️ Clear All Numbers?",
       `This will remove all ${
         session.calledNumbers?.length || 0
@@ -188,7 +189,7 @@ export default function GameScreen() {
   };
 
   const handleNewSession = () => {
-    Alert.alert(
+    showAlert(
       "New Session",
       "Start a new game session? Current progress will be saved.",
       [
