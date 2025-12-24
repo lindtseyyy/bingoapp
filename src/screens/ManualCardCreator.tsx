@@ -197,6 +197,18 @@ export default function ManualCardCreator({
         <Text style={styles.subtitle}>Tap any cell to enter a number</Text>
       </View>
 
+      {/* Card Name Input */}
+      <View style={styles.nameContainer}>
+        <Text style={styles.nameLabel}>Card Name (Optional):</Text>
+        <TextInput
+          style={styles.nameInput}
+          value={cardName}
+          onChangeText={setCardName}
+          placeholder="e.g., Lucky Card, Card #1"
+          placeholderTextColor="#999"
+        />
+      </View>
+
       {/* Column Range Guide */}
       <View style={styles.guideContainer}>
         <Text style={styles.guideTitle}>Column Ranges:</Text>
