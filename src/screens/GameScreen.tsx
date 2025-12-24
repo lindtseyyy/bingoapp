@@ -313,7 +313,7 @@ export default function GameScreen() {
                 style={styles.newSessionButton}
                 onPress={handleNewSession}
               >
-                <Text style={styles.newSessionText}>New</Text>
+                <Text style={styles.newSessionText}>New Game</Text>
               </TouchableOpacity>
             </View>
           </TouchableOpacity>
