@@ -137,7 +137,7 @@ export default function ManualCardCreator({
             for (let row = 0; row < 5; row++) {
               for (let col = 0; col < 5; col++) {
                 const currentValue = card.cells[row][col].value;
-                if (currentValue !== 0 && currentValue !== "FREE") {
+                if (currentValue !== "" && currentValue !== "FREE") {
                   autoCard.cells[row][col].value = currentValue;
                 }
               }
