@@ -3,18 +3,13 @@
  * Select which cards to play in the current game session
  */
 
-import React, { useEffect, useState } from "react";
-import {
-  Alert,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { useTheme } from "@/contexts/ThemeContext";
+import React, { useEffect, useMemo, useState } from "react";
+import { Alert, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import BingoCardComponent from "../components/BingoCard";
 import { BingoCard } from "../logic/bingoGenerator";
 import { getAllCards } from "../services/storageService";
+import { createStyles } from "./styles/CardSelection.styles";
 
 interface CardSelectionProps {
   onSelectionComplete: (selectedCardIds: string[]) => void;
@@ -25,6 +20,9 @@ export default function CardSelection({
   onSelectionComplete,
   preSelectedIds = [],
 }: CardSelectionProps) {
+  const { colorScheme } = useTheme();
+  const styles = useMemo(() => createStyles(colorScheme), [colorScheme]);
+
   const [cards, setCards] = useState<BingoCard[]>([]);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(
     new Set(preSelectedIds)
@@ -165,134 +163,3 @@ export default function CardSelection({
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#f9fafb",
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#f9fafb",
-  },
-  loadingText: {
-    fontSize: 16,
-    color: "#6b7280",
-  },
-  emptyContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 20,
-    backgroundColor: "#f9fafb",
-  },
-  emptyTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#1f2937",
-    marginBottom: 8,
-  },
-  emptyText: {
-    fontSize: 14,
-    color: "#6b7280",
-    textAlign: "center",
-  },
-  header: {
-    backgroundColor: "#fff",
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: "#e5e7eb",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#1f2937",
-  },
-  subtitle: {
-    fontSize: 14,
-    color: "#6b7280",
-    marginTop: 4,
-  },
-  selectAllButton: {
-    backgroundColor: "#6366f1",
-    paddingHorizontal: 14,
-    paddingVertical: 8,
-    borderRadius: 6,
-  },
-  selectAllText: {
-    color: "#fff",
-    fontSize: 13,
-    fontWeight: "600",
-  },
-  scrollView: {
-    flex: 1,
-  },
-  cardContainer: {
-    backgroundColor: "#fff",
-    padding: 16,
-    marginBottom: 2,
-    borderLeftWidth: 4,
-    borderLeftColor: "transparent",
-  },
-  cardSelected: {
-    borderLeftColor: "#10b981",
-    backgroundColor: "#f0fdf4",
-  },
-  cardHeader: {
-    marginBottom: 12,
-  },
-  cardInfo: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  cardTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#1f2937",
-  },
-  checkbox: {
-    width: 28,
-    height: 28,
-    borderRadius: 6,
-    borderWidth: 2,
-    borderColor: "#d1d5db",
-    backgroundColor: "#fff",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  checkboxSelected: {
-    backgroundColor: "#10b981",
-    borderColor: "#10b981",
-  },
-  checkmark: {
-    color: "#fff",
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  footer: {
-    backgroundColor: "#fff",
-    padding: 16,
-    borderTopWidth: 1,
-    borderTopColor: "#e5e7eb",
-  },
-  continueButton: {
-    backgroundColor: "#10b981",
-    padding: 16,
-    borderRadius: 8,
-    alignItems: "center",
-  },
-  continueButtonDisabled: {
-    backgroundColor: "#d1d5db",
-  },
-  continueButtonText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-});
