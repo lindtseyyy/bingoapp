@@ -25,6 +25,7 @@ const MAPPING = {
   "rectangle.grid.3x2.fill": "grid-view",
   "square.grid.3x3": "grid-on",
   "info.circle": "info",
+  gear: "settings",
 } as IconMapping;
 
 /**
