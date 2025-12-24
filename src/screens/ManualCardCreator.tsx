@@ -194,13 +194,6 @@ export default function ManualCardCreator({
 
   return (
     <ScrollView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>
-          {editingCard ? "Edit Bingo Card" : "Manual Card Entry"}
-        </Text>
-        <Text style={styles.subtitle}>Tap any cell to enter a number</Text>
-      </View>
-
       {/* Card Name Input */}
       <View style={styles.nameContainer}>
         <Text style={styles.nameLabel}>Card Name (Optional):</Text>
