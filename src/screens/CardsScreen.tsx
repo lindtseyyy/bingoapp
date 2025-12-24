@@ -3,7 +3,8 @@
  */
 
 import { useTheme } from "@/contexts/ThemeContext";
-import React, { useEffect, useMemo, useState } from "react";
+import { useFocusEffect } from "@react-navigation/native";
+import React, { useCallback, useMemo, useState } from "react";
 import {
   Alert,
   Modal,
@@ -32,14 +33,16 @@ export default function CardsScreen() {
   // Dynamic styles based on theme
   const styles = useMemo(() => createStyles(colorScheme), [colorScheme]);
 
-  useEffect(() => {
-    loadCards();
-  }, []);
-
-  const loadCards = async () => {
+  const loadCards = useCallback(async () => {
     const loadedCards = await getAllCards();
     setCards(loadedCards);
-  };
+  }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      loadCards();
+    }, [loadCards])
+  );
 
   const handleGenerateCard = async () => {
     const newCard = generateBingoCard();

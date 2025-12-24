@@ -3,7 +3,8 @@
  */
 
 import { useTheme } from "@/contexts/ThemeContext";
-import React, { useEffect, useMemo, useState } from "react";
+import { useFocusEffect } from "@react-navigation/native";
+import React, { useCallback, useMemo, useState } from "react";
 import {
   Alert,
   Modal,
@@ -33,14 +34,16 @@ export default function PatternsScreen() {
   // Dynamic styles based on theme
   const styles = useMemo(() => createStyles(colorScheme), [colorScheme]);
 
-  useEffect(() => {
-    loadPatterns();
-  }, []);
-
-  const loadPatterns = async () => {
+  const loadPatterns = useCallback(async () => {
     const loadedPatterns = await getAllPatterns();
     setPatterns(loadedPatterns);
-  };
+  }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      loadPatterns();
+    }, [loadPatterns])
+  );
 
   const handleDeletePattern = (patternId: string, patternName: string) => {
     if (isBuiltInPattern(patternName)) {
