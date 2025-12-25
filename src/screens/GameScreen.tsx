@@ -409,7 +409,9 @@ export default function GameScreen() {
 
               return (
                 <View key={card.id} style={styles.cardContainer}>
-                  <Text style={styles.cardName}>Card #{card.id.slice(-6)}</Text>
+                  <Text style={styles.cardName}>
+                    {card.name || `Card #${index + 1}`}
+                  </Text>
 
                   <BingoCard card={card} showMarked={true} editable={false} />
 

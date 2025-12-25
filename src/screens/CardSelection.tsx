@@ -101,7 +101,9 @@ export default function CardSelection({
             >
               <View style={styles.cardHeader}>
                 <View style={styles.cardInfo}>
-                  <Text style={styles.cardTitle}>Card #{index + 1}</Text>
+                  <Text style={styles.cardTitle}>
+                    {card.name || `Card #${index + 1}`}
+                  </Text>
                   <View
                     style={[
                       styles.checkbox,
